@@ -7,6 +7,7 @@
 +$  score  [won=? foul=? tab=(unit paid)]  ::  outcome, foul indicates dispute with counterparty
 +$  wager
   $:  id=@
+      who=ship
       =race
       when=@da
       toss=(unit pick)
