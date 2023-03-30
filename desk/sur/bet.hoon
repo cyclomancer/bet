@@ -1,10 +1,10 @@
 |%
-+$  race   @ta
-+$  rail   @ta
++$  race   @ta  ::  description of bet's object/conditions
++$  rail   @ta  ::  payment method to use on resolution
 +$  odds   (pair @ @)
-+$  pick   [side=? max=@ud]
-+$  paid   [when=@da =rail]
-+$  score  [won=? foul=? tab=(unit paid)]
++$  pick   [side=? max=@ud]  ::  side taken and stakes offered/accepted
++$  paid   [when=@da =rail]  ::  receipt
++$  score  [won=? foul=? tab=(unit paid)]  ::  outcome, foul indicates dispute with counterparty
 +$  wager
   $:  id=@
       =race
@@ -13,8 +13,6 @@
       heat=(unit odds)
       game=(unit score)
   ==
-++  next-project
-  [%ordinals %auction]
 ::
 +$  offer
   $:  idx=@
@@ -26,11 +24,11 @@
 +$  bet-act
   $%  [%make who=@p =offer]
       [%take =which bet=@ud]
-      [%bitch =which]
-      [%claim =which won=?]
-      [%foul =which]
-      [%settle =which =paid]
-      [%clear =which]
+      [%bitch =which]  ::  decline offer
+      [%claim =which won=?]  ::  assert resolution
+      [%foul =which]  ::  dispute claim
+      [%settle =which =paid]  ::  payer notification of payee
+      [%clear =which]  ::  payee indicates payment received
   ==
 +$  bet-msg
   $%  [%made =offer]
@@ -42,6 +40,7 @@
   ==
 --
 
+::  future work
 ::  gossip offers to pals - expiry
 ::  betting pools, standing offers
 ::  trigger Lightning send if both/all parties agree
