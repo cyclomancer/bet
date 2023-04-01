@@ -1,28 +1,55 @@
 |%
-+$  race   @ta  ::  description of bet's object/conditions
-+$  rail   @ta  ::  payment method to use on resolution
-+$  odds   (pair @ @)
-+$  pick   [side=? max=@ud]  ::  side taken and stakes offered/accepted
++$  race   @t  ::  description of bet's object/conditions
++$  rail   @t  ::  payment method to use on resolution
++$  odds   [for=@ against=@]
++$  pick   [side=? max=@ud]  ::  side=true means we are for; stakes offered/accepted
 +$  paid   [when=@da =rail]  ::  receipt
-+$  score  [won=? foul=? tab=(unit paid)]  ::  outcome, foul indicates dispute with counterparty
++$  foul   $~  ~    ?(%lied %welshed ~)
++$  score
+  $:
+    won=[claimer=@p res=?]
+    =foul
+    tab=(unit paid)
+  ==
 +$  wager
-  $:  id=@
+  $:  id=@da
       who=ship
       =race
       when=@da
-      toss=(unit pick)
+      =pick
       heat=(unit odds)
       game=(unit score)
   ==
++$  status
+  $?  %sent
+      %recd
+      %bitch
+  ==
 ::
 +$  offer
-  $:  idx=@
+  $:  id=@da
       =race
       =pick
       heat=(unit odds)
+      =status
   ==
-+$  which  [who=@p id=@]
-+$  bet-act
+++  cmp
+  |=  [a=[@p @da] b=[@p @da]]
+  (lte +.a +.b)
+++  offers
+  =<  offers
+  |%
+  +$  offers  ((mop which offer) cmp)  ::  TODO write order comparator for mop
+  ++  on  ((^on which offer) cmp)
+  --
+++  wagers
+  =<  wagers
+  |%
+  +$  wagers  ((mop which wager) cmp)  ::  TODO write order comparator for mop
+  ++  on  ((^on which wager) cmp)
+  --
++$  which  [who=@p id=@da]
++$  act
   $%  [%make who=@p =offer]
       [%take =which bet=@ud]
       [%bitch =which]  ::  decline offer
@@ -31,7 +58,7 @@
       [%settle =which =paid]  ::  payer notification of payee
       [%clear =which]  ::  payee indicates payment received
   ==
-+$  bet-msg
++$  msg
   $%  [%made =offer]
       [%taken i=@ bet=@ud]
       [%bitched i=@]
@@ -39,6 +66,7 @@
       [%settled i=@ =paid]
       [%cleared i=@]
   ==
+  ::  add manual remind msg?
 --
 
 ::  future work
