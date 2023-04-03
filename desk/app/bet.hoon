@@ -73,25 +73,29 @@
     (send-message /new-offer who.act made+offer.act)
   ::
       %take
-    =/  sent=offer:bet  (~(got by offers) which.act)
-    ?>  (lte bet.act max.pick.sent)
-    ?>  =(who.which.act src.bowl)
+    =/  recd=offer:bet  (~(got by offers) which.act)
+    ?>  (lte bet.act max.pick.recd)
+    :: ?>  =(who.which.act src.bowl)
     =|  =wager:bet
     =.  wager
       %=  wager
         id    id.which.act
         who   src.bowl
-        race  race.sent
+        race  race.recd
         when  now.bowl
-        pick  [side.pick.sent bet.act]
-        heat  heat.sent
+        pick  [!side.pick.recd bet.act]
+        heat  heat.recd
       ==
     =:  offers  +:(del:on:offers:bet offers which.act)
         wagers  (put:on:wagers:bet wagers which.act wager)
       ==
     (send-message /take-offer who.which.act taken+[id.which.act bet.act])
   ::
-      %bitch  !!
+      %bitch
+    =/  recd=offer:bet  (~(got by offers) which.act)
+    =.  status.recd  %bitch
+    =.  offers  (put:on:offers:bet offers which.act recd)
+    (send-message /bitch-out who.which.act bitched+[id.which.act])
   ::
       %claim
     =/  open=wager:bet  (~(got by wagers) which.act)
