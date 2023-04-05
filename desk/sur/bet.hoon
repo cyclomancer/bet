@@ -13,25 +13,26 @@
   ==
 +$  wager
   $:  id=@da
-      who=ship
+      who=@p
       =race
       when=@da
       =pick
       heat=(unit odds)
       game=(unit score)
   ==
-+$  status
++$  source
   $?  %sent
       %recd
-      %bitch
   ==
 ::
 +$  offer
   $:  id=@da
+      who=@p
       =race
       =pick
       heat=(unit odds)
-      =status
+      =source
+      bitch=?
   ==
 ++  cmp
   |=  [a=[@p @da] b=[@p @da]]
@@ -50,22 +51,16 @@
   --
 +$  which  [who=@p id=@da]
 +$  act
-  $%  [%make who=@p =offer]
+  $%  [%make who=(unit @p) =offer]
       [%take =which bet=@ud]
       [%bitch =which]  ::  decline offer
       [%claim =which won=?]  ::  assert resolution
       [%foul =which]  ::  dispute claim or assert counterparty welshed
       [%settle =which =paid]  ::  payer notification of payee
       [%clear =which]  ::  payee indicates payment received
+      [%foul =which =foul]
   ==
-+$  msg
-  $%  [%made =offer]
-      [%taken i=@ bet=@ud]
-      [%bitched i=@]
-      [%claimed i=@ won=?]
-      [%settled i=@ =paid]
-      [%cleared i=@]
-  ==
++$  update  (each offer wager)
   ::  add manual remind msg?
 --
 
