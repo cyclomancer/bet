@@ -51,11 +51,10 @@
   --
 +$  which  [who=@p id=@da]
 +$  act
-  $%  [%make who=(unit @p) =offer]
+  $%  [%make =offer]
       [%take =which bet=@ud]
       [%bitch =which]  ::  decline offer
       [%claim =which won=?]  ::  assert resolution
-      [%foul =which]  ::  dispute claim or assert counterparty welshed
       [%settle =which =paid]  ::  payer notification of payee
       [%clear =which]  ::  payee indicates payment received
       [%foul =which =foul]

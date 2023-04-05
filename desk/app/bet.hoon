@@ -47,7 +47,7 @@
   |=  =path
   ^-  (unit (unit cage))
   ?>  (team:title our.bowl src.bowl)
-  ?+  path  (on-peek:def src.bowl)
+  ?+  path  (on-peek:def path)
       [%x %all ~]
     ``bet-state+!>(state)
   ==
@@ -80,18 +80,17 @@
 ++  handle-act
   |=  =act:bet
   ^+  main
-  =-  (give-diff:- which.act)
-  ?+    -.act  main
+  ?-    -.act
       %make
     ?:  =(src.bowl our.bowl)
-      ?>  =(^ who.act)
       =.  source.offer.act  %sent
-      =.  offers  (put:on:offers:bet offers [u.who.act id.offer.act] offer.act)
-      (send-message /make who.act make+[~ offer.act])
+      =.  offers  (put:on:offers:bet offers [who.offer.act id.offer.act] offer.act)
+      (send-action /make who.offer.act make+[offer.act])
     ?>  =(~ (~(get by offers) [src.bowl id.offer.act]))
     =.  source.offer.act  %recd
+    =.  who.offer.act  src.bowl
     =.  offers  (put:on:offers:bet offers [src.bowl id.offer.act] offer.act)
-    (give-update which.act)
+    (give-update [src.bowl id.offer.act])
   ::
       %take
     ?>  |(=(src.bowl our.bowl) =(src.bowl who.which.act))
@@ -102,18 +101,18 @@
       %=  wager
         id    id.which.act
         who   who.which.act
-        race  race.recd
+        race  race.offer
         when  now.bowl
         heat  heat.offer
       ==
-    =?  pick.wager  =(status.offer %sent)
+    =?  pick.wager  =(source.offer %sent)
       [side.pick.offer bet.act]
-    =?  pick.wager  =(status.offer %recd)
+    =?  pick.wager  =(source.offer %recd)
       [!side.pick.offer bet.act]
     =.  wagers  (put:on:wagers:bet wagers which.act wager)
     ?.  =(src.bowl our.bowl)
       (give-update which.act)
-    (send-message /take who.which.act take+[[our.bowl id.which.act] bet.act])
+    (send-action /take who.which.act take+[[our.bowl id.which.act] bet.act])
   ::
       %bitch
     ?>  |(=(src.bowl our.bowl) =(src.bowl who.which.act))
@@ -122,7 +121,7 @@
     =.  offers  (put:on:offers:bet offers which.act offer)
     ?.  =(src.bowl our.bowl)
       (give-update which.act)
-    (send-message /bitch who.which.act bitch+[our.bowl id.which.act])
+    (send-action /bitch who.which.act bitch+[our.bowl id.which.act])
   ::
       %claim
     ?>  |(=(src.bowl our.bowl) =(src.bowl who.which.act))
@@ -133,7 +132,6 @@
       =.  foul.u.game.open  %lied  ::  TODO: update client on foul
       (give-update which.act)
       ::  issue with simultaneous claims resulting in accidental fouls?
-      main
     =|  =score:bet
     =.  won.score  [src.bowl won.act]
     ::  TODO: add behn timer
@@ -141,7 +139,7 @@
     ?.  =(src.bowl our.bowl)
       (give-update which.act)
     =.  who.which.act  our.bowl
-    (send-message /claim who.which.act claim+[which.act won.act])
+    (send-action /claim who.which.act claim+[which.act won.act])
   ::
       %settle
     ?>  |(=(src.bowl our.bowl) =(src.bowl who.which.act))
@@ -154,7 +152,7 @@
     ?.  =(src.bowl our.bowl)
       (give-update which.act)
     =.  who.which.act  our.bowl
-    (send-message /settle who.which.act settle+[which.act paid.act])
+    (send-action /settle who.which.act settle+[which.act paid.act])
   ::
       %clear
     ?>  |(=(src.bowl our.bowl) =(src.bowl who.which.act))
@@ -169,20 +167,20 @@
     ?.  =(src.bowl our.bowl)
       (give-update which.act)
     =.  who.which.act  our.bowl
-    (send-message /clear who.which.act clear+which.act)
+    (send-action /clear who.which.act clear+which.act)
   ::
       %foul
     ?>  =(src.bowl our.bowl)
-    =/  open=wager:act  (~(got by offers) which.act)
+    =/  open=wager:bet  (~(got by wagers) which.act)
     ?~  game.open
       main
-    =.  foul.game.open  foul.act
+    =.  foul.u.game.open  foul.act
     =.  wagers  (put:on:wagers:bet wagers which.act open)
     main
   ==
 ::
-++  send-message
-  |=  [=wire who=@p =msg:bet]
+++  send-action
+  |=  [=wire who=@p =act:bet]
   ^+  main
-  (emit %pass wire %agent who^%bet %poke %bet-msg !>(msg))
+  (emit %pass wire %agent who^%bet %poke %bet-act !>(act))
 --

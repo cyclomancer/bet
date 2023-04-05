@@ -6,8 +6,8 @@
   ^-  json
   |^
   %-  pairs
-  :~  ['offers' a+(turn ~(val by offers.stat) enjs-offer)]
-      ['wagers' a+(turn ~(val by wagers.stat) enjs-wager)]
+  :~  ['offers' a+(turn ~(val by offers.stat) offer)]
+      ['wagers' a+(turn ~(val by wagers.stat) wager)]
   ==
   ++  offer
     =,  enjs:format
@@ -73,7 +73,7 @@
   |^
   %.  jon
   %-  of
-  :~  [%make (ot ~[who+(mu (se @p)) offer+off])]
+  :~  [%make (ot ~[offer+off])]
       [%take (ot ~[which+wich bet+ne])]
       [%bitch (ot ~[which+wich])]
       [%claim (ot ~[which+wich won+b])]
