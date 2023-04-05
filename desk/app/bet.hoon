@@ -1,19 +1,14 @@
 /-  bet
 /+  dbug, default-agent
 |%
-+$  state-0
-  $:  %0
-    =offers:bet  ::  most recent first
-    =wagers:bet
-  ==
 +$  versioned-state
-  $%  state-0
+  $%  state-0:bet
   ==
 +$  card  card:agent:gall
 --
 ::
 %-  agent:dbug
-=|  state-0
+=|  state-0:bet
 =*  state  -
 ^-  agent:gall
 =<
@@ -24,7 +19,7 @@
 ::
 ++  on-init
   ^-  (quip card _this)
-  `this(state *state-0)
+  `this(state *state-0:bet)
 ::
 ++  on-save
   ^-  vase
@@ -41,7 +36,7 @@
   =^  cards  state
     =<  abet
     ?+  mark  (on-poke:def mark vase)
-      %bet-action   (handle-act:main !<(act:bet vase))
+      %bet-act   (handle-act:main !<(act:bet vase))
     ==
   [cards this]
 ::

@@ -61,6 +61,11 @@
       [%foul =which =foul]
   ==
 +$  update  (each offer wager)
++$  state-0
+  $:  %0
+    =offers  ::  most recent first
+    =wagers
+  ==
   ::  add manual remind msg?
 --
 
