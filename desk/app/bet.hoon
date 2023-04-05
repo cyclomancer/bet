@@ -136,6 +136,7 @@
       ?:  =(src.bowl our.bowl)
         main
       =.  foul.u.game.open  %lied  ::  TODO: update client on foul
+      (give-update which.act)
       ::  issue with simultaneous claims resulting in accidental fouls?
       main
     =|  =score:bet
