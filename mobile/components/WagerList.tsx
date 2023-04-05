@@ -1,10 +1,22 @@
 import React from "react";
-import { StyleSheet, View, Text, FlatList } from "react-native";
+import {
+  TouchableOpacity,
+  StyleSheet,
+  View,
+  Text,
+  FlatList,
+} from "react-native";
+
 import { Wager } from "../types";
 
-const WagerList = ({ wagers }: { wagers: Wager[] }) => {
+type WagerListProps = {
+  onNav: (w: Wager) => void;
+  wagers: Wager[];
+};
+
+const WagerList = ({ wagers, onNav }: WagerListProps) => {
   const renderItem = ({ item }) => (
-    <View style={styles.item}>
+    <TouchableOpacity onPress={() => onNav(item)} style={styles.item}>
       <Text style={styles.title}>
         {item.who}: {item.race}
       </Text>
@@ -28,7 +40,7 @@ const WagerList = ({ wagers }: { wagers: Wager[] }) => {
             }`
           : "N/A"}
       </Text>
-    </View>
+    </TouchableOpacity>
   );
 
   return (

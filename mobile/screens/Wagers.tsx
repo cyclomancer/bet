@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import WagerList from "../components/WagerList";
-import { fixtures } from "../types";
+import { fixtures, Wager } from "../types";
 import {
   WagersScreenNavigationProp,
   WagersScreenRouteProp,
@@ -19,9 +19,12 @@ type WagersProps = {
 };
 
 const Wagers = ({ navigation }: WagersProps) => {
+  const onNav = (wager: Wager) => {
+    navigation.navigate("WagerDetail", { wager });
+  };
   return (
     <View style={styles.container}>
-      <WagerList wagers={fixtures} />
+      <WagerList onNav={onNav} wagers={fixtures} />
       <TouchableOpacity
         style={styles.addButton}
         onPress={() => navigation.navigate("NewWager")}
@@ -50,4 +53,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Wagers
+export default Wagers;
