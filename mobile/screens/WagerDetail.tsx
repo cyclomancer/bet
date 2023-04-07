@@ -1,6 +1,9 @@
-import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { WagerDetailScreenNavigationProp, WagerDetailScreenRouteProp } from './AppNavigator';
+import React from "react";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import {
+  WagerDetailScreenNavigationProp,
+  WagerDetailScreenRouteProp,
+} from "../AppNavigator";
 
 type WagerDetailProps = {
   navigation: WagerDetailScreenNavigationProp;
@@ -38,32 +41,31 @@ const WagerDetail: React.FC<WagerDetailProps> = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     paddingHorizontal: 20,
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 20,
-    textAlign: 'center',
+    textAlign: "center",
   },
   label: {
     fontSize: 18,
     marginBottom: 10,
   },
   button: {
-    backgroundColor: '#6f42c1',
+    backgroundColor: "#6f42c1",
     borderRadius: 5,
     padding: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginVertical: 10,
   },
   buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: "#fff",
+    fontWeight: "bold",
   },
 });
 
 export default WagerDetail;
-

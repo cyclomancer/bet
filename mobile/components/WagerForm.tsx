@@ -40,9 +40,6 @@ const WagerForm = ({ onSubmit }) => {
         name="race"
         rules={{ required: "Race is required." }}
       />
-      {errors.race && (
-        <Text style={styles.errorText}>{errors.race.message}</Text>
-      )}
 
       <Text style={styles.label}>When:</Text>
       <Controller
@@ -60,9 +57,6 @@ const WagerForm = ({ onSubmit }) => {
         name="when"
         rules={{ required: "Timestamp is required." }}
       />
-      {errors.when && (
-        <Text style={styles.errorText}>{errors.when.message}</Text>
-      )}
 
       <Text style={styles.label}>Side:</Text>
       <Controller
@@ -94,7 +88,6 @@ const WagerForm = ({ onSubmit }) => {
         name="max"
         rules={{ required: "Max is required." }}
       />
-      {errors.max && <Text style={styles.errorText}>{errors.max.message}</Text>}
 
       <Text style={styles.label}>Odds (Favor / Against):</Text>
       <View style={styles.oddsContainer}>
@@ -130,12 +123,6 @@ const WagerForm = ({ onSubmit }) => {
           rules={{ required: "Against odds are required." }}
         />
       </View>
-      {errors.favor && (
-        <Text style={styles.errorText}>{errors.favor.message}</Text>
-      )}
-      {errors.against && (
-        <Text style={styles.errorText}>{errors.against.message}</Text>
-      )}
 
       <TouchableOpacity
         style={styles.button}
@@ -150,7 +137,7 @@ const WagerForm = ({ onSubmit }) => {
 const styles = StyleSheet.create({
   form: {
     paddingHorizontal: 20,
-    width: '100%'
+    width: "100%",
   },
   label: {
     marginTop: 20,

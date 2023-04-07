@@ -6,59 +6,54 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import Keychain from "react-native-keychain";
 import * as SecureStore from "expo-secure-store";
 import {
   LoginScreenNavigationProp,
   LoginScreenRouteProp,
-} from "./AppNavigator";
+} from "../AppNavigator";
+import { Credentials } from "../types";
+import useStore from "../store";
 
 type LoginScreenProps = {
   navigation: LoginScreenNavigationProp;
   route: LoginScreenRouteProp;
 };
 
-interface Credentials {
-  username: string;
-  ship: string;
-  password: string;
-}
-
-async function getCredentials(): Credentials | undefined {
-  const [username, ship, password] = await Promise.all([
-    SecureStore.getItemAsync("username"),
+async function getCredentials(): Promise<Credentials | undefined> {
+  const [url, ship, code] = await Promise.all([
+    SecureStore.getItemAsync("url"),
     SecureStore.getItemAsync("ship"),
-    SecureStore.getItemAsync("password"),
+    SecureStore.getItemAsync("code"),
   ] as const);
-  if (username.length === 0) {
+  if (!url || url.length === 0) {
     return undefined;
   }
-  return { username, ship, password };
+  return { url, ship, code };
 }
 
 async function saveCredentials(cred: Credentials) {
   await Promise.all([
-    SecureStore.setItemAsync("username", cred.username),
+    SecureStore.setItemAsync("url", cred.url),
     SecureStore.setItemAsync("ship", cred.ship),
-    SecureStore.setItemAsync("password", cred.password),
+    SecureStore.setItemAsync("code", cred.code),
   ]);
 }
 
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
-  const [username, setUsername] = useState("");
+  const [url, setUrl] = useState("");
   const [ship, setShip] = useState("");
-  const [password, setPassword] = useState("");
+  const [code, setCode] = useState("");
 
   useEffect(() => {
+    console.log(window.origin);
     const fetchCredentials = async () => {
       const credentials = await getCredentials();
 
       if (credentials) {
-        setUsername(credentials.username);
-        setPassword(credentials.password);
+        setUrl(credentials.url);
+        setCode(credentials.code);
         setShip(credentials.ship);
         // Attempt to login with the saved credentials
-        handleLogin();
       }
     };
 
@@ -66,9 +61,15 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   }, []);
 
   const handleLogin = async () => {
+    try {
+      await useStore.getState().login({ ship, url, code });
+    } catch (e) {
+      debugger;
+      console.warn(e)
+    }
     // Implement your authentication logic here
     //
-    await saveCredentials({ ship, username, password });
+    await saveCredentials({ ship, url, code });
 
     navigation.replace("Wagers");
   };
@@ -78,9 +79,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
       <Text style={styles.title}>Login</Text>
       <TextInput
         style={styles.input}
-        placeholder="Username"
-        onChangeText={setUsername}
-        value={username}
+        placeholder="URL"
+        onChangeText={setUrl}
+        value={url}
       />
       <TextInput
         style={styles.input}
@@ -93,8 +94,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         style={styles.input}
         placeholder="Password"
         secureTextEntry
-        onChangeText={setPassword}
-        value={password}
+        onChangeText={setCode}
+        value={code}
       />
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>

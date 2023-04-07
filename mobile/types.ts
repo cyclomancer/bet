@@ -46,10 +46,41 @@ export interface Wager {
   game: Score | null;
 }
 
+interface Identifiable {
+  //  id as @da
+  id: string;
+  //  counterparty of bet, @p
+  who: string;
+}
+
+export function getId({ id, who }: Identifiable): string {
+  return `${who}/${id}`;
+}
+
+export interface Offer {
+  //  description of bet's object/conditions
+  race: string;
+  //  timestamp of acceptance
+  when: number;
+  //  side taken
+  toss: BetPick | null;
+  // odds
+  heat: Odds | null;
+  source: "sent" | "recd";
+  //  true if offer was declined
+  bitch: boolean;
+}
+
+export interface Credentials {
+  url: string;
+  ship: string;
+  code: string;
+}
+
 export const fixtures: Wager[] = [
   {
     id: 1,
-    who: '~tondes-sitrym',
+    who: "~tondes-sitrym",
     race: "Team A vs Team B",
     when: 1648598400,
     toss: { side: true, max: 100 },
@@ -59,7 +90,7 @@ export const fixtures: Wager[] = [
 
   {
     id: 2,
-    who: '~sarpen-laplux',
+    who: "~sarpen-laplux",
     race: "Player A vs Player B",
     when: 1648602100,
     toss: { side: false, max: 150 },
@@ -74,7 +105,7 @@ export const fixtures: Wager[] = [
   {
     id: 3,
     race: "Horse A vs Horse B",
-    who: '~rovnys-ricfer',
+    who: "~rovnys-ricfer",
     when: 1648605800,
     toss: { side: true, max: 50 },
     heat: { favor: 1.2, against: 4 },
@@ -83,7 +114,7 @@ export const fixtures: Wager[] = [
 
   {
     id: 4,
-    who: '~dachus-tiprel',
+    who: "~dachus-tiprel",
     race: "Car A vs Car B",
     when: 1648609500,
     toss: { side: false, max: 75 },
@@ -98,7 +129,7 @@ export const fixtures: Wager[] = [
   {
     id: 5,
     race: "Team C vs Team D",
-    who: '~doplyr-harbur',
+    who: "~doplyr-harbur",
     when: 1648613200,
     toss: { side: true, max: 200 },
     heat: { favor: 2.5, against: 1.5 },
