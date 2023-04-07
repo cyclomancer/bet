@@ -14,12 +14,12 @@
     |=  =offer:bet
     ^-  json
     %-  pairs
-    :~  ['id' (numb id.offer)]
-        ['who' (ship who.offer)]
-        ['race' (tape race.offer)]
+    :~  ['id' s/(scot %da id.offer)]
+        ['who' s/(scot %p who.offer)]
+        ['race' s/race.offer]
         ['pick' (pick pick.offer)]
         ['heat' (heat heat.offer)]
-        ['source' (tape source.offer)]
+        ['source' s/source.offer]
         ['bitch' b+bitch.offer]
     ==
   ++  wager
@@ -27,9 +27,9 @@
       |=  =wager:bet
       ^-  json
       %-  pairs
-      :~  ['id' (numb id.wager)]
-          ['who' (ship who.wager)]
-          ['race' (tape race.wager)]
+      :~  ['id' s/(scot %da id.wager)]
+          ['who' s/(scot %p who.wager)]
+          ['race' s/race.wager]
           ['when' (sect when.wager)]
           ['pick' (pick pick.wager)]
           ['heat' (heat heat.wager)]
@@ -55,55 +55,53 @@
       ~
     %-  pairs
     :~  ['result' b+res.won.u.gem]
-        ['claimer' (ship claimer.won.u.gem)]
-        ['foul' s+foul.u.gem]
+        ['claimer' s/(scot %p claimer.won.u.gem)]
+        ['foul' ?~(foul.u.gem ~ s+`@t`foul.u.gem)]
         :-  'paid'
-            ?~  paid.gem
+            ?~  tab.u.gem
               ~
             %-  pairs
-            :~  ['when' (sect when.u.paid.u.gem)]
-                ['rail' (tape rail.u.paid.u.gem)]
+            :~  ['when' (sect when.u.tab.u.gem)]
+                ['rail' s/rail.u.tab.u.gem]
             ==
     ==
   --
 ++  dejs-act
-  =,  dejs:format
+  =,  ^?(dejs:format)
   |=  jon=json
+  ~!  ..bet
   ^-  act:bet
   |^
   %.  jon
   %-  of
   :~  [%make (ot ~[offer+off])]
-      [%take (ot ~[which+wich bet+ne])]
+      [%take (ot ~[which+wich bet+ni])]
       [%bitch (ot ~[which+wich])]
-      [%claim (ot ~[which+wich won+b])]
+      [%claim (ot ~[which+wich won+bo])]
       [%settle (ot ~[which+wich paid+pad])]
       [%clear (ot ~[which+wich])]
       [%foul (ot ~[which+wich foul+fol])]
   ==
   ++  wich
-    |=  jon=json
-    ^-  which:bet
-    (ot ~[who+(se @p) id+ni])
+    ^-  $-(json which:bet)
+    (ot ~[who+(se %p) id+(se %da)])
   ++  fol
     |=  jon=json
     ?:  =(~ jon)  ~
     ((su (perk %welshed %lied ~)) jon)
   ++  off
-    |=  jon=json
-    ^-  offer:bet
+    ^-  $-(json offer:bet)
     %-  ot
-    :~  [%id ni]
-        [%who (se @p)]
+    :~  [%id (se %da)]
+        [%who (se %p)]
         [%race so]
-        [%pick (ot ~[side+b max+ne])]
+        [%pick (ot ~[side+bo max+ni])]
         [%heat (mu (ot ~[for+ni against+ni]))]
-        [%source (se @tas)]
-        [%bitch b]
+        [%source (su (perk %recd %sent ~))]
+        [%bitch bo]
     ==
   ++  pad
-    |=  jon=json
-    ^-  paid:bet
+    ^-  $-(json paid:bet)
     (ot ~[when+du rail+so])
   --
 --
