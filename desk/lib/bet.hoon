@@ -6,9 +6,23 @@
   ^-  json
   |^
   %-  pairs
-  :~  ['offers' a+(turn ~(val by offers.stat) offer)]
-      ['wagers' a+(turn ~(val by wagers.stat) wager)]
+  :~  :-  'offers'
+      %-  pairs
+      %+  turn  (tap:on:offers:bet offers.stat)
+      |=  [w=which:bet o=offer:bet]
+      [(which-str w) (offer o)] 
+    ::
+      :-  'wagers'
+      %-  pairs
+      %+  turn  (tap:on:wagers:bet wagers.stat)
+      |=  [wh=which:bet wa=wager:bet]
+      [(which-str wh) (wager wa)] 
   ==
+  ++  which-str
+    |=  w=which:bet
+    ^-  @t
+    (crip "{(scow %p who.w)}/{(scow %da id.w)}")
+
   ++  offer
     =,  enjs:format
     |=  =offer:bet
@@ -74,12 +88,12 @@
   |^
   %.  jon
   %-  of
-  :~  [%make (ot ~[offer+off])]
+  :~  [%make off]
       [%take (ot ~[which+wich bet+ni])]
-      [%bitch (ot ~[which+wich])]
+      [%bitch wich]
       [%claim (ot ~[which+wich won+bo])]
       [%settle (ot ~[which+wich paid+pad])]
-      [%clear (ot ~[which+wich])]
+      [%clear wich]
       [%foul (ot ~[which+wich foul+fol])]
   ==
   ++  wich
