@@ -45,7 +45,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const [code, setCode] = useState("");
 
   useEffect(() => {
-    console.log(window.origin);
     const fetchCredentials = async () => {
       const credentials = await getCredentials();
 
@@ -61,15 +60,12 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   }, []);
 
   const handleLogin = async () => {
-    try {
-      await useStore.getState().login({ ship, url, code });
-    } catch (e) {
-      debugger;
-      console.warn(e)
-    }
+    await useStore.getState().login({ ship, url, code });
     // Implement your authentication logic here
     //
     await saveCredentials({ ship, url, code });
+
+    await useStore.getState().initialize();
 
     navigation.replace("Wagers");
   };

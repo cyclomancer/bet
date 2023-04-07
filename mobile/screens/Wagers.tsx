@@ -22,6 +22,7 @@ const Wagers = ({ navigation }: WagersProps) => {
   const onNav = (wager: Wager) => {
     navigation.navigate("WagerDetail", { wager });
   };
+  const wagers = useStore(s => Object.values(s.wagers));
   return (
     <View style={styles.container}>
       <WagerList onNav={onNav} wagers={fixtures} />

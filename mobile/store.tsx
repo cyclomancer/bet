@@ -1,4 +1,4 @@
-import Urbit from "@urbit/http-api";
+import Urbit from "@uqbar/react-native-api/index";
 import { create } from "zustand";
 import { Offer, Wager, Credentials, getId } from "./types";
 import produce from "immer";
@@ -20,7 +20,20 @@ const useStore = create<StoreState>((set, get) => ({
   offers: {},
   api: undefined,
   login: async (cred) => {
-    const api = await Urbit.authenticate({ ...cred, verbose: true });
+    const formBody = `${encodeURIComponent("password")}=${encodeURIComponent(
+      cred.code
+    )}`;
+
+    const response = await fetch(`${cred.url}/~/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+      },
+      body: formBody,
+    });
+    const authCookieHeader = response.headers.get("set-cookie") || "";
+
+    const api = new Urbit(cred.url, "", "", cred.ship);
     set(() => ({ api }));
   },
   initialize: async () => {
