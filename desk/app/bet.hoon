@@ -1,5 +1,5 @@
 /-  bet
-/+  dbug, default-agent
+/+  dbug, default-agent, bet-lib=bet
 |%
 +$  versioned-state
   $%  state-0:bet
