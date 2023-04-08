@@ -56,7 +56,7 @@
   |=  =path
   ^-  (quip card _this)
   ?+  path  (on-watch:def path)
-    [%updates ~]  `this
+    [%updates ~]  ?>(=(our src):bowl `this)
   ==
 ::  client subscriptions
 ++  on-leave  on-leave:def

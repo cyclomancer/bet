@@ -11,6 +11,7 @@
   ++  noun  date
   ++  json
     ?-  -.date
-      %|  (offer:enjs-state p.date)
-      %&  (wager:enjs-state p.date)
+      %offer  (offer:enjs-state +.date)
+      %wager  (wager:enjs-state +.date)
+    ==
     

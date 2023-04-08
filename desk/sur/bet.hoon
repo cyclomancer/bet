@@ -59,7 +59,10 @@
       [%clear =which]  ::  payee indicates payment received
       [%foul =which =foul]
   ==
-+$  update  (each offer wager)
++$  update  
+  $%  [%offer =offer]
+      [%wager wager]
+  ==
 +$  state-0
   $:  %0
     =offers  ::  most recent first
