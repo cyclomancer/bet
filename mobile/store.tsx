@@ -59,10 +59,20 @@ const useStore = create<StoreState>((set, get) => ({
     });
     const state = await api.scry({
       app: "bet",
-      path: "/all",
+      path: "/updates",
     });
     set(() => state);
     await promise;
+  },
+  addOffer: (offer: Offer) => {
+    const { api } = get();
+    api.poke({
+      app: "bet",
+      mark: "bet-act",
+      json: {
+        make: offer,
+      },
+    });
   },
 }));
 

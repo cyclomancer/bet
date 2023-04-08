@@ -10,7 +10,10 @@ interface NewWagerProps {
   navigation: NewWagerScreenNavigationProp;
   route: NewWagerScreenNavigationProp;
 }
-const onSubmit = () => {};
-const NewWager = (props: NewWagerProps) => <WagerForm onSubmit={onSubmit} />;
+const NewWager = (props: NewWagerProps) => {
+  const onSubmit = () => {};
+
+  return (<WagerForm onSubmit={onSubmit} />);
+};
 
 export default NewWager;

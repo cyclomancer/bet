@@ -8,7 +8,8 @@ import NewWager from "./screens/NewWager";
 import { RouteProp } from "@react-navigation/native";
 import LoginScreen from "./screens/LoginScreen";
 import WagerDetail from "./screens/WagerDetail";
-import { Wager } from "./types";
+import OfferDetail from "./screens/OfferDetail";
+import { Wager, Offer } from "./types";
 
 const Stack = createStackNavigator();
 
@@ -31,6 +32,12 @@ const AppNavigator = () => {
         options={{ title: "Wager Detail" }}
       />
       <Stack.Screen
+        name="OfferDetail"
+        component={OfferDetail}
+        options={{ title: "Offer Detail" }}
+      />
+
+      <Stack.Screen
         name="Login"
         component={LoginScreen}
         options={{ title: "Login", headerShown: false }}
@@ -44,6 +51,9 @@ export type RootStackParamList = {
   NewWager: undefined;
   WagerDetail: {
     wager: Wager;
+  };
+  OfferDetail: {
+    offer: Offer;
   };
   Login: undefined;
 };
@@ -73,6 +83,15 @@ export type WagerDetailScreenNavigationProp = StackNavigationProp<
 export type WagerDetailScreenRouteProp = RouteProp<
   RootStackParamList,
   "WagerDetail"
+>;
+
+export type OfferDetailScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "OfferDetail"
+>;
+export type OfferDetailScreenRouteProp = RouteProp<
+  RootStackParamList,
+  "OfferDetail"
 >;
 
 export default AppNavigator;

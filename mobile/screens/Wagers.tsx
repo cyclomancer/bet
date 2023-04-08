@@ -7,7 +7,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 import WagerList from "../components/WagerList";
-import { fixtures, Wager } from "../types";
+import OfferList from "../components/OfferList";
+import { fixtures, Wager, Offer } from "../types";
+import useStore from "../store";
 import {
   WagersScreenNavigationProp,
   WagersScreenRouteProp,
@@ -19,19 +21,25 @@ type WagersProps = {
 };
 
 const Wagers = ({ navigation }: WagersProps) => {
-  const onNav = (wager: Wager) => {
+  const onWagerNav = (wager: Wager) => {
     navigation.navigate("WagerDetail", { wager });
   };
-  const wagers = useStore(s => Object.values(s.wagers));
+  const onOfferNav = (offer: Offer) => {
+    navigation.navigate("OfferDetail", { offer });
+  };
+
+  const wagers = useStore((s) => Object.values(s.wagers));
+  const offers = useStore((s) => Object.values(s.offers));
   return (
     <View style={styles.container}>
-      <WagerList onNav={onNav} wagers={fixtures} />
+      <WagerList onNav={onWagerNav} wagers={wagers} />
       <TouchableOpacity
         style={styles.addButton}
         onPress={() => navigation.navigate("NewWager")}
       >
         <Text style={styles.addButtonText}>Add Wager</Text>
       </TouchableOpacity>
+      <OfferList onNav={onOfferNav} offers={offers} />
     </View>
   );
 };

@@ -39,7 +39,7 @@ export interface Wager {
   //  timestamp of acceptance
   when: number;
   //  side taken
-  toss: BetPick | null;
+  pick: BetPick;
   //  odds
   heat: Odds | null;
   //  outcome, if decided
@@ -57,13 +57,11 @@ export function getId({ id, who }: Identifiable): string {
   return `${who}/${id}`;
 }
 
-export interface Offer {
+export interface Offer extends Identifiable {
   //  description of bet's object/conditions
   race: string;
-  //  timestamp of acceptance
-  when: number;
   //  side taken
-  toss: BetPick | null;
+  toss: BetPick;
   // odds
   heat: Odds | null;
   source: "sent" | "recd";

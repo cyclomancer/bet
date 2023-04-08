@@ -8,6 +8,17 @@ import {
   Switch,
 } from "react-native";
 import { useForm, Controller } from "react-hook-form";
+import { formatDa } from "@urbit/aura";
+import { unixToDa } from "@urbit/api";
+import useStore from "../store";
+import { Offer } from "../types";
+
+interface FormState {
+  race: string;
+  who: string;
+  side: boolean;
+  max: number;
+}
 
 const WagerForm = ({ onSubmit }) => {
   const {
@@ -16,16 +27,31 @@ const WagerForm = ({ onSubmit }) => {
     setValue,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm<FormState>();
 
-  const onSubmitForm = (data) => {
-    onSubmit(data);
+  const onSubmitForm = async ({ race, who, side, max }: FormState) => {
+    const id = formatDa(unixToDa(Date.now()));
+    const offer: Offer = {
+      id,
+      who,
+      race,
+      bitch: false,
+      heat: null,
+      pick: {
+        side,
+        max: parseInt(max, 10),
+      },
+      source: "sent",
+    };
+    console.log(offer);
+    await useStore.getState().addOffer(offer);
+
     reset();
   };
 
   return (
     <View style={styles.form}>
-      <Text style={styles.label}>Race:</Text>
+      <Text style={styles.label}>Description of event being bet on:</Text>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -34,14 +60,13 @@ const WagerForm = ({ onSubmit }) => {
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
-            placeholder="Team A vs Team B"
+            placeholder="~hastuc-dibtux loses his fight to ~tondes-sitrym"
           />
         )}
         name="race"
-        rules={{ required: "Race is required." }}
+        rules={{ required: "Description is required." }}
       />
-
-      <Text style={styles.label}>When:</Text>
+      <Text style={styles.label}>Who are you betting?</Text>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -50,29 +75,28 @@ const WagerForm = ({ onSubmit }) => {
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
-            placeholder="Timestamp (e.g., 1648598400)"
-            keyboardType="numeric"
+            placeholder="~hodrex-hodlyr"
           />
         )}
-        name="when"
-        rules={{ required: "Timestamp is required." }}
+        name="who"
+        rules={{ required: "Counterparty is required." }}
       />
 
-      <Text style={styles.label}>Side:</Text>
+      <Text style={styles.label}>What side of the bet are you taking:</Text>
       <Controller
         control={control}
         render={({ field: { onChange, value } }) => (
           <View style={styles.switchContainer}>
-            <Text>Against</Text>
+            <Text>Happens</Text>
             <Switch value={value} onValueChange={onChange} />
-            <Text>For</Text>
+            <Text>Does Not Happen</Text>
           </View>
         )}
         name="side"
         defaultValue={false}
       />
 
-      <Text style={styles.label}>Max:</Text>
+      <Text style={styles.label}>Maximum stakes:</Text>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -89,7 +113,7 @@ const WagerForm = ({ onSubmit }) => {
         rules={{ required: "Max is required." }}
       />
 
-      <Text style={styles.label}>Odds (Favor / Against):</Text>
+      {/*<Text style={styles.label}>Odds (Favor / Against):</Text>
       <View style={styles.oddsContainer}>
         <Controller
           control={control}
@@ -123,6 +147,7 @@ const WagerForm = ({ onSubmit }) => {
           rules={{ required: "Against odds are required." }}
         />
       </View>
+      */}
 
       <TouchableOpacity
         style={styles.button}
