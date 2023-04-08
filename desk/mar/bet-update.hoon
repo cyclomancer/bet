@@ -10,8 +10,10 @@
   |%
   ++  noun  date
   ++  json
+    %+  frond:enjs:format  -.date
     ?-  -.date
       %offer  (offer:enjs-state +.date)
       %wager  (wager:enjs-state +.date)
     ==
-    
+  --
+--

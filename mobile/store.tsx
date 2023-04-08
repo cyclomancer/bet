@@ -42,6 +42,7 @@ const useStore = create<StoreState>((set, get) => ({
       app: "bet",
       path: "/updates",
       event: (data) => {
+        console.log(data);
         if ("wager" in data) {
           set(
             produce((draft) => {
@@ -59,7 +60,7 @@ const useStore = create<StoreState>((set, get) => ({
     });
     const state = await api.scry({
       app: "bet",
-      path: "/updates",
+      path: "/all",
     });
     set(() => state);
     await promise;

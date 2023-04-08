@@ -2,22 +2,24 @@
 |%
 ++  enjs-state
   =,  enjs:format
-  |=  stat=state-0:bet
-  ^-  json
-  |^
-  %-  pairs
-  :~  :-  'offers'
-      %-  pairs
-      %+  turn  (tap:on:offers:bet offers.stat)
-      |=  [w=which:bet o=offer:bet]
-      [(which-str w) (offer o)] 
-    ::
-      :-  'wagers'
-      %-  pairs
-      %+  turn  (tap:on:wagers:bet wagers.stat)
-      |=  [wh=which:bet wa=wager:bet]
-      [(which-str wh) (wager wa)] 
-  ==
+  =<  state
+  |%
+  ++  state
+    |=  stat=state-0:bet
+    ^-  json
+    %-  pairs
+    :~  :-  'offers'
+        %-  pairs
+        %+  turn  (tap:on:offers:bet offers.stat)
+        |=  [w=which:bet o=offer:bet]
+        [(which-str w) (offer o)] 
+      ::
+        :-  'wagers'
+        %-  pairs
+        %+  turn  (tap:on:wagers:bet wagers.stat)
+        |=  [wh=which:bet wa=wager:bet]
+        [(which-str wh) (wager wa)] 
+    ==
   ++  which-str
     |=  w=which:bet
     ^-  @t
