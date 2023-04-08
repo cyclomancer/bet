@@ -75,8 +75,8 @@
   =;  =update:bet
     (emit %give %fact ~[/updates] %bet-update !>(update))
   ?^  wag=(get:on:wagers:bet wagers which)
-    [%| u.wag]
-  [%& (got:on:offers:bet offers which)]
+    [%wager u.wag]
+  [%offer (got:on:offers:bet offers which)]
 ++  handle-act
   |=  =act:bet
   ^+  main
